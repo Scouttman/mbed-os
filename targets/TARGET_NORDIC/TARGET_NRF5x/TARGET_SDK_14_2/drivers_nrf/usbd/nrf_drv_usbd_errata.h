@@ -68,21 +68,47 @@
  */
 static inline bool nrf_drv_usbd_errata_type_52840(void)
 {
-    return ((((*(uint32_t *)0xF0000FE0) & 0xFF) == 0x08) &&
-        (((*(uint32_t *)0xF0000FE4) & 0x0F) == 0x0));
+    return (*(uint32_t *)0x10000130UL == 0x8UL);
 }
 
 /**
- * @brief Internal auxiliary function to check if the program is running on first sample of
- *        NRF52840 chip
- * @retval true  It is NRF52480 chip and it is first sample version
+ * @brief Internal auxiliary function to check if the program is running on Engineering A revision
+ * @retval true  It is NRF52480 chip and it is Engineering A revision
  * @retval false It is other chip
  */
-static inline bool nrf_drv_usbd_errata_type_52840_proto1(void)
+static inline bool nrf_drv_usbd_errata_type_52840_eng_a(void)
 {
-    return ( nrf_drv_usbd_errata_type_52840() &&
-               ( ((*(uint32_t *)0xF0000FE8) & 0xF0) == 0x00 ) &&
-               ( ((*(uint32_t *)0xF0000FEC) & 0xF0) == 0x00 ) );
+    return (nrf_drv_usbd_errata_type_52840() && (*(uint32_t *)0x10000134UL == 0x0UL));
+}
+
+/**
+ * @brief Internal auxiliary function to check if the program is running on Engineering B revision
+ * @retval true  It is NRF52480 chip and it is Engineering B revision
+ * @retval false It is other chip
+ */
+static inline bool nrf_drv_usbd_errata_type_52840_eng_b(void)
+{
+    return (nrf_drv_usbd_errata_type_52840() && (*(uint32_t *)0x10000134UL == 0x1UL));
+}
+
+/**
+ * @brief Internal auxiliary function to check if the program is running on Engineering C revision
+ * @retval true  It is NRF52480 chip and it is Engineering C revision
+ * @retval false It is other chip
+ */
+static inline bool nrf_drv_usbd_errata_type_52840_eng_c(void)
+{
+    return (nrf_drv_usbd_errata_type_52840() && (*(uint32_t *)0x10000134UL == 0x2UL));
+}
+
+/**
+ * @brief Internal auxiliary function to check if the program is running on Engineering D revision
+ * @retval true  It is NRF52480 chip and it is Engineering D revision
+ * @retval false It is other chip
+ */
+static inline bool nrf_drv_usbd_errata_type_52840_eng_d(void)
+{
+    return (nrf_drv_usbd_errata_type_52840() && (*(uint32_t *)0x10000134UL == 0x3UL));
 }
 
 /**
@@ -95,7 +121,7 @@ static inline bool nrf_drv_usbd_errata_type_52840_proto1(void)
  */
 static inline bool nrf_drv_usbd_errata_104(void)
 {
-    return NRF_DRV_USBD_ERRATA_ENABLE && nrf_drv_usbd_errata_type_52840_proto1();
+    return (NRF_DRV_USBD_ERRATA_ENABLE && nrf_drv_usbd_errata_type_52840_eng_a());
 }
 
 /**
@@ -108,7 +134,7 @@ static inline bool nrf_drv_usbd_errata_104(void)
  */
 static inline bool nrf_drv_usbd_errata_154(void)
 {
-    return NRF_DRV_USBD_ERRATA_ENABLE && nrf_drv_usbd_errata_type_52840_proto1();
+    return (NRF_DRV_USBD_ERRATA_ENABLE && nrf_drv_usbd_errata_type_52840_eng_a());
 }
 
 /**
@@ -121,20 +147,63 @@ static inline bool nrf_drv_usbd_errata_154(void)
  */
 static inline bool nrf_drv_usbd_errata_166(void)
 {
-    return NRF_DRV_USBD_ERRATA_ENABLE && true;
+    return (NRF_DRV_USBD_ERRATA_ENABLE && true);
 }
 
 /**
- * @brief Function to check if chip requires errata ???
+ * @brief Function to check if chip requires errata 171
+ *
+ * Errata: USBD might not reach its active state.
+ *
+ * @retval true  Errata should be implemented
+ * @retval false Errata should not be implemented
+ */
+static inline bool nrf_drv_usbd_errata_171(void)
+{
+    return (NRF_DRV_USBD_ERRATA_ENABLE && true);
+}
+
+/**
+ * @brief Function to check if chip requires errata 187
+ *
+ * Errata: USB cannot be enabled
+ *
+ * @retval true  Errata should be implemented
+ * @retval false Errata should not be implemented
+ */
+static inline bool nrf_drv_usbd_errata_187(void)
+{
+    return (NRF_DRV_USBD_ERRATA_ENABLE && 
+            (nrf_drv_usbd_errata_type_52840_eng_b() ||
+             nrf_drv_usbd_errata_type_52840_eng_c() ||
+             nrf_drv_usbd_errata_type_52840_eng_d())
+           );
+}
+
+/**
+ * @brief Function to check if chip requires errata 199
+ *
+ * Errata: USBD cannot receive tasks during DMA
+ *
+ * @retval true  Errata should be implemented
+ * @retval false Errata should not be implemented
+ */
+static inline bool nrf_drv_usb_errata_199(void)
+{
+    return (NRF_DRV_USBD_ERRATA_ENABLE && true);
+}
+
+/**
+ * @brief Function to check if chip requires errata 200
  *
  * Errata: SIZE.EPOUT not writable
  *
  * @retval true  Errata should be implemented
  * @retval false Errata should not be implemented
  */
-static inline bool nrf_drv_usbd_errata_sizeepout_rw(void)
+static inline bool nrf_drv_usbd_errata_200(void)
 {
-    return NRF_DRV_USBD_ERRATA_ENABLE && nrf_drv_usbd_errata_type_52840_proto1();
+    return (NRF_DRV_USBD_ERRATA_ENABLE && nrf_drv_usbd_errata_type_52840_eng_a());
 }
 
 /** @} */

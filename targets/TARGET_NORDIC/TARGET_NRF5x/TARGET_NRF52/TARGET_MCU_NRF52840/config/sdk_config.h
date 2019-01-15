@@ -3270,13 +3270,36 @@
 #define USBD_CONFIG_IRQ_PRIORITY 7
 #endif
 
-// <o> NRF_DRV_USBD_DMASCHEDULER_MODE  - USBD SMA scheduler working scheme
+// <o> USBD_CONFIG_DMASCHEDULER_MODE  - USBD SMA scheduler working scheme
+ 
+// <0=> Prioritized access 
+// <1=> Round Robin 
 
-// <0=> Prioritized access
-// <1=> Round Robin
+#ifndef USBD_CONFIG_DMASCHEDULER_MODE
+#define USBD_CONFIG_DMASCHEDULER_MODE 0
+#endif
 
-#ifndef NRF_DRV_USBD_DMASCHEDULER_MODE
-#define NRF_DRV_USBD_DMASCHEDULER_MODE 0
+// <q> USBD_CONFIG_DMASCHEDULER_ISO_BOOST  - Give priority to isochronous transfers
+ 
+
+// <i> This option gives priority to isochronous transfers.
+// <i> Enabling it assures that isochronous transfers are always processed,
+// <i> even if multiple other transfers are pending.
+// <i> Isochronous endpoints are prioritized before the usbd_dma_scheduler_algorithm
+// <i> function is called, so the option is independent of the algorithm chosen.
+
+#ifndef USBD_CONFIG_DMASCHEDULER_ISO_BOOST
+#define USBD_CONFIG_DMASCHEDULER_ISO_BOOST 1
+#endif
+
+// <q> USBD_CONFIG_ISO_IN_ZLP  - Respond to an IN token on ISO IN endpoint with ZLP when no data is ready
+ 
+
+// <i> If set, ISO IN endpoint will respond to an IN token with ZLP when no data is ready to be sent.
+// <i> Else, there will be no response.
+
+#ifndef USBD_CONFIG_ISO_IN_ZLP
+#define USBD_CONFIG_ISO_IN_ZLP 1
 #endif
 
 // </e>
