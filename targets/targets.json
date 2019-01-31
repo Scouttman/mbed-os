@@ -6827,6 +6827,7 @@
             "SYSTICK_CLK_OFF_DURING_SLEEP",
             "TRNG",
             "USTICKER",
+	    "USBDEVICE",
             "QSPI"
         ],
         "extra_labels": [
