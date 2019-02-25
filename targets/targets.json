@@ -6826,6 +6826,7 @@
             "SPI_ASYNCH",
             "SYSTICK_CLK_OFF_DURING_SLEEP",
             "TRNG",
+	    "USBDEVICE",
             "USTICKER",
             "QSPI"
         ],
