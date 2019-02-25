@@ -69,10 +69,9 @@ private:
 
     USBPhyEvents *events;
 
-    // Power related flags
-    volatile bool usb_power_evt_flag;
-    volatile nrf_drv_power_usb_evt_t usb_power_evt;
-    volatile bool connect_enabled;
+    bool started;
+
+    bool connect_enabled;
 
     // DMA flags
     volatile bool dma_busy;
@@ -86,6 +85,23 @@ private:
 	inline static uint8_t get_ep_index(usb_ep_t ep) {
 		return ((NRF_USBD_EPIN_CHECK(ep)? 8 : 0) + NRF_USBD_EP_NR_GET(ep));
 	}
+
+	/*
+	 * Disables all endpoints except for control (IN0/OUT0)
+	 */
+	void default_config(void);
+
+	void _usbd_enable(void);
+	void _usbd_disable(void);
+
+	/*
+	 * Called after USBPWRRDY event
+	 * This means the USB PHY regulator has
+	 * stabilized and is ready to go
+	 */
+	void _usbd_start(void);
+	void _usbd_stop(void);
+
 
     static void _usbisr(void);
     static void _usb_power_evt_handler(nrf_drv_power_usb_evt_t event);
