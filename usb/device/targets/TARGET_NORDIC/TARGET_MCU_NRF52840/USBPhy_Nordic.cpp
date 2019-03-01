@@ -19,8 +19,6 @@
 #include "platform/mbed_critical.h"
 #include "platform/mbed_assert.h"
 
-#include "nrf_clock.h"
-
 /*
  * TODO list for nRF52840 USBD driver
  *
