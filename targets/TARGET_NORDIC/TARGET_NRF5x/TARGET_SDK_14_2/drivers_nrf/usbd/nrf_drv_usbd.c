@@ -52,6 +52,8 @@
 #include <string.h>
 #include <inttypes.h>
 
+#include "nrf_atfifo.h" /* Mbed modification for fifo DMA scheduler *
+
 #define NRF_LOG_MODULE_NAME USBD
 
 #if USBD_CONFIG_LOG_ENABLED
@@ -232,6 +234,21 @@ STATIC_ASSERT(USBD_EP_BITPOS(NRF_DRV_USBD_EPOUT7) == USBD_EPDATASTATUS_EPOUT7_Po
 /** The value of DIR bit for IN direction (Device -> Host) */
 #define USBD_DRV_REQUESTTYPE_DIR_IN     (1U << USBD_DRV_REQUESTTYPE_DIR_BITPOS)
 /** @} */
+
+/**
+ * Mbed modification for fifo DMA scheduler algorithm
+ *
+ * A priority-based DMA scheduler (as original) seems to cause
+ * issues with interleaved endpoint transfers
+ *
+ * A fifo-based approach will ensure each endpoint is served
+ * by the DMA with equal priority.
+ *
+ * The built-in Nordic atomic fifo queue library was used
+ * for this scheduler.
+ *
+ */
+NRF_ATFIFO_DEF(dma_fifo, uint8_t, (NRF_USBD_EPIN_CNT + NRF_USBD_EPOUT_CNT));
 
 /**
  * @brief Current driver state
@@ -902,6 +919,9 @@ static void usbd_ep_abort_all(void)
     }
 
     m_ep_ready = (((1U << NRF_USBD_EPIN_CNT) - 1U) << USBD_EPIN_BITPOS_0);
+
+    // Clear the DMA scheduler fifo
+    nrf_atfifo_clear(dma_fifo);
 }
 
 /**
@@ -1758,6 +1778,8 @@ ret_code_t nrf_drv_usbd_init(nrf_drv_usbd_event_handler_t const event_handler)
         p_state->transfer_cnt = 0;
     }
 
+    NRF_ATFIFO_INIT(dma_fifo);
+
     return NRF_SUCCESS;
 }
 
@@ -1852,6 +1874,9 @@ void nrf_drv_usbd_enable(void)
     m_ep_dma_waiting = 0;
     usbd_dma_pending_clear();
     m_last_setup_dir = NRF_DRV_USBD_EPOUT0;
+
+    // Reset the dma scheduler fifo
+    nrf_atfifo_clear(dma_fifo);
 
     m_drv_state = NRF_DRV_STATE_POWERED_ON;
 
