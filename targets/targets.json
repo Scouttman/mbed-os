@@ -15,7 +15,6 @@
         "default_lib": "std",
         "bootloader_supported": false,
         "static_memory_defines": true,
-        "printf_lib": "std",
         "config": {
             "console-uart": {
                 "help": "Target has UART console on pins STDIO_UART_TX, STDIO_UART_RX. Value is only significant if target has SERIAL device.",
@@ -2287,10 +2286,7 @@
         "inherits": ["FAMILY_STM32"],
         "supported_form_factors": ["ARDUINO", "MORPHO"],
         "core": "Cortex-M0",
-        "extra_labels_add": [
-            "STM32F0",
-            "STM32F091xC"
-        ],
+        "extra_labels_add": ["STM32F0", "STM32F091RC"],
         "config": {
             "clock_source": {
                 "help": "Mask value : USE_PLL_HSE_EXTC | USE_PLL_HSE_XTAL (need HW patch) | USE_PLL_HSI",
@@ -4030,8 +4026,11 @@
         "core": "Cortex-M4F",
         "extra_labels_add": [
             "STM32F4",
-            "STM32F407xG"
+            "STM32F407",
+            "STM32F407xG",
+            "STM32F407VG"
         ],
+        "supported_toolchains": ["ARM", "uARM", "GCC_ARM", "IAR"],
         "config": {
             "clock_source": {
                 "help": "Mask value : USE_PLL_HSE_EXTC (need HW patch) | USE_PLL_HSE_XTAL | USE_PLL_HSI",
@@ -4053,8 +4052,12 @@
         "core": "Cortex-M4F",
         "extra_labels_add": [
             "STM32F4",
-            "STM32F407xG"
+            "STM32F407",
+            "STM32F407xG",
+            "STM32F407ZG",
+            "STM_EMAC"
         ],
+        "supported_toolchains": ["ARM", "uARM", "GCC_ARM", "IAR"],
         "config": {
             "clock_source": {
                 "help": "Mask value : USE_PLL_HSE_EXTC (need HW patch) | USE_PLL_HSE_XTAL | USE_PLL_HSI",
@@ -4066,6 +4069,7 @@
                 "value": "12000000"
             }
         },
+        "macros_add": ["USB_STM_HAL"],
         "overrides": { "lse_available": 0 },
         "device_has_add": [
             "ANALOGOUT",
@@ -6952,7 +6956,6 @@
             "I2CSLAVE",
             "I2C_ASYNCH",
             "INTERRUPTIN",
-            "ITM",
             "LPTICKER",
             "PORTIN",
             "PORTINOUT",
@@ -7774,6 +7777,7 @@
             "FLASH",
             "I2C",
             "I2C_ASYNCH",
+	    "I2CSLAVE",
             "INTERRUPTIN",
             "ITM",
             "LPTICKER",
@@ -7829,8 +7833,6 @@
         "overrides": {
             "mpu-rom-end": "0x1fffffff"
         },
-        "release_versions": ["5"],
-        "device_name": "nRF52840_xxAA",
         "OUTPUT_EXT": "hex",
         "is_disk_virtual": true,
         "supported_toolchains": ["GCC_ARM", "ARM", "IAR"],
@@ -7842,22 +7844,29 @@
     "NRF52840_DK": {
         "supported_form_factors": ["ARDUINO"],
         "inherits": ["MCU_NRF52840"],
-        "detect_code": ["1102"],
+        "release_versions": ["5"],
+        "device_name": "nRF52840_xxAA",
         "macros_add": [
             "CONFIG_GPIO_AS_PINRESET"
         ]
     },
     "ARDUINO_NANO33BLE": {
         "inherits": ["MCU_NRF52840"],
-        "features_add": ["STORAGE"],
+        "release_versions": ["5"],
+        "device_name": "nRF52840_xxAA",
+        "features_add": ["BLE", "STORAGE"],
         "components_remove": ["QSPIF"],
+        "components_add": ["FLASHIAP"],
         "device_has_remove": ["QSPI", "ITM"],
+        "device_has_add": ["FLASH"],
         "macros_add": [
             "CONFIG_GPIO_AS_PINRESET"
         ]
     },
     "MTB_LAIRD_BL654": {
         "inherits": ["MCU_NRF52840"],
+        "release_versions": ["5"],
+        "device_name": "nRF52840_xxAA",
         "detect_code": ["0465"],
         "features_remove": ["CRYPTOCELL310"],
         "macros_remove": ["MBEDTLS_CONFIG_HW_SUPPORT"],
@@ -7869,10 +7878,13 @@
     },
     "MAKERDIARY_NRF52840_MDK": {
         "inherits": ["MCU_NRF52840"],
+        "release_versions": ["5"],
+        "device_name": "nRF52840_xxAA",
         "detect_code": ["1026"],
         "device_has_remove": ["ITM"],
         "macros_add": [
-            "CONFIG_GPIO_AS_PINRESET"
+            "CONFIG_GPIO_AS_PINRESET",
+            "NRF52_ERRATA_20"
         ]
     },
     "BLUEPILL_F103C8": {
@@ -8444,7 +8456,7 @@
         ],
         "config": {
             "clock_source": {
-                "help": "Mask value : USE_PLL_HSE_EXTC (need HW patch) | USE_PLL_HSE_XTAL | USE_PLL_HSI | USE_PLL_MSI",
+                "help": "Mask value : USE_PLL_HSE_EXTC (need HW patch) | USE_PLL_HSE_XTAL (need HW patch) | USE_PLL_HSI | USE_PLL_MSI",
                 "value": "USE_PLL_MSI",
                 "macro_name": "CLOCK_SOURCE"
             },
@@ -8457,7 +8469,6 @@
             "FLASHIAP"
         ],
         "macros_add": [
-            "HSE_VALUE=16000000",
             "STM32L4R9xx",
             "MBED_TICKLESS",
             "EXTRA_IDLE_STACK_REQUIRED"
@@ -8853,6 +8864,7 @@
         "release_versions": ["5"],
         "device_name": "M2351KIAAEES",
         "bootloader_supported": true,
+        "tickless-from-us-ticker": true,
         "forced_reset_timeout": 3,
         "public": false
     },
@@ -8870,29 +8882,25 @@
         "components_add": ["FLASHIAP"],
         "post_binary_hook": {"function": "M2351Code.merge_secure"},
         "secure_image_filename": "NuMaker-mbed-TZ-secure-example.hex",
-        "mbed_rom_start"        : "0x10010000",
-        "mbed_rom_size"         : "0x70000",
-        "mbed_ram_start"        : "0x30002000",
-        "mbed_ram_size"         : "0x16000"
+        "mbed_rom_start"        : "0x10040000",
+        "mbed_rom_size"         : "0x40000",
+        "mbed_ram_start"        : "0x30008000",
+        "mbed_ram_size"         : "0x10000"
     },
     "NU_PFM_M2351_NPSA_S": {
-        "overrides": {
-            "boot-stack-size"   : "0x600"
-        },
         "inherits": ["NU_PFM_M2351"],
         "core": "Cortex-M23",
         "trustzone": true,
         "extra_labels_add": [
             "M23_S"
         ],
-        "device_has_remove": ["SERIAL", "SERIAL_ASYNCH", "SERIAL_FC", "STDIO_MESSAGES"],
         "components_add": ["FLASHIAP"],
         "deliver_to_target": "NU_PFM_M2351_NPSA_NS",
         "delivery_dir": "TARGET_NUVOTON/TARGET_M2351/TARGET_M23_NS/TARGET_NU_PFM_M2351_NPSA_NS/TARGET_NU_PREBUILD_SECURE",
         "mbed_rom_start"        : "0x0",
-        "mbed_rom_size"         : "0x10000",
+        "mbed_rom_size"         : "0x40000",
         "mbed_ram_start"        : "0x20000000",
-        "mbed_ram_size"         : "0x2000"
+        "mbed_ram_size"         : "0x8000"
     },
     "NUMAKER_M252KG": {
         "core": "Cortex-M23",
@@ -9622,6 +9630,7 @@
     },
     "EP_AGORA": {
         "inherits": ["MCU_NRF52840"],
+        "device_name": "nRF52840_xxAA",
         "supported_form_factors": [],
         "config": {
             "modem_is_on_board": {
@@ -9635,6 +9644,9 @@
                 "macro_name": "MODEM_ON_BOARD_UART"
             }
         },
+        "components_add": ["SPIF"],
+        "components_remove": ["QSPIF"],
+        "release_versions": ["5"],
         "macros_add": [
             "CONFIG_GPIO_AS_PINRESET"
         ]
@@ -9849,52 +9861,6 @@
             "tickless-from-us-ticker": true
         },
         "forced_reset_timeout": 3
-    },
-    "NUCLEO_G071RB": {
-        "inherits": ["FAMILY_STM32"],
-        "supported_form_factors": ["ARDUINO", "MORPHO"],
-        "core": "Cortex-M0+",
-        "config": {
-            "clock_source": {
-                "help": "Mask value : USE_PLL_HSE_EXTC | USE_PLL_HSE_XTAL (need HW patch) | USE_PLL_HSI",
-                "value": "USE_PLL_HSI",
-                "macro_name": "CLOCK_SOURCE"
-            },
-            "lpticker_lptim": {
-                "help": "This target supports LPTIM. Set value 1 to use LPTIM for LPTICKER, or 0 to use RTC wakeup timer",
-                "value": 1
-            },
-            "hse_value": {
-                "help": "HSE default value is 25MHz in HAL",
-                "value": "8000000",
-                "macro_name": "HSE_VALUE"
-            }
-        },
-        "extra_labels_add": [
-            "STM32G0",
-            "STM32G071xx",
-            "STM32G071RB"
-        ],
-        "components_add": ["FLASHIAP"],
-        "macros_add": [
-            "STM32G071xx",
-            "STM32G071RB",
-            "EXTRA_IDLE_STACK_REQUIRED",
-            "MBED_TICKLESS"
-        ],
-        "overrides": {
-            "lpticker_delay_ticks": 0
-        },
-        "device_has_add": [
-            "ANALOGOUT",
-            "SERIAL_ASYNCH",
-            "FLASH",
-            "MPU"
-        ],
-        "detect_code": ["0221"],
-        "release_versions": ["5"],
-        "device_name": "STM32G071RBTx",
-        "bootloader_supported": true
     },
     "__build_tools_metadata__": {
         "version": "1",
