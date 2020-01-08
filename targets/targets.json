@@ -7472,7 +7472,7 @@
             "FLASH",
             "I2C",
             "I2C_ASYNCH",
-	    "I2CSLAVE",
+            "I2CSLAVE",
             "INTERRUPTIN",
             "ITM",
             "LPTICKER",
