@@ -7775,7 +7775,7 @@
             "FLASH",
             "I2C",
             "I2C_ASYNCH",
-	    "I2CSLAVE",
+            "I2CSLAVE",
             "INTERRUPTIN",
             "ITM",
             "LPTICKER",
@@ -8503,13 +8503,13 @@
         "overrides": { "lpticker_delay_ticks": 0 },
         "detect_code": ["0839"],
         "device_has_add": [
-			"CRC",
-			"SERIAL_ASYNCH",
-			"SERIAL_FC",
-			"TRNG",
-			"FLASH",
-			"MPU"
-		],
+                        "CRC",
+                        "SERIAL_ASYNCH",
+                        "SERIAL_FC",
+                        "TRNG",
+                        "FLASH",
+                        "MPU"
+                ],
         "features": ["BLE"],
         "release_versions": ["2", "5"],
         "bootloader_supported": false
@@ -9592,15 +9592,15 @@
         "detect_code": ["1703"],
         "macros_add": ["GD32E10X"],
         "release_versions": ["5"]
-	},
+        },
     "TT_M4G9": {
-		"inherits": ["Target"],
-		"core": "Cortex-M4F",
-		"is_disk_virtual": true,
-		"extra_labels": ["TT"],
-		"macros": ["__TT_M4G9__"],
-		"supported_toolchains": ["GCC_ARM", "ARM", "IAR"],
-		"device_has": ["USTICKER",
+                "inherits": ["Target"],
+                "core": "Cortex-M4F",
+                "is_disk_virtual": true,
+                "extra_labels": ["TT"],
+                "macros": ["__TT_M4G9__"],
+                "supported_toolchains": ["GCC_ARM", "ARM", "IAR"],
+                "device_has": ["USTICKER",
                    "ANALOGIN",
                    "ANALOGOUT",
                    "SERIAL",
@@ -9616,11 +9616,11 @@
                    "STDIO_MESSAGES",
                    "FLASH",
                    "MPU"
-		],
-		"device_name": "TMPM4G9F15FG",
-		"detect_code": ["8013"],
-		"release_versions": ["5"],
-		"bootloader_supported": true
+                ],
+                "device_name": "TMPM4G9F15FG",
+                "detect_code": ["8013"],
+                "release_versions": ["5"],
+                "bootloader_supported": true
     },
     "EP_AGORA": {
         "inherits": ["MCU_NRF52840"],
