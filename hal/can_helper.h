@@ -22,6 +22,12 @@
 
 #if DEVICE_CAN
 
+#if !DEVICE_CANFD
+#define CAN_MAX_SIZE 8
+#else
+#define CAN_MAX_SIZE 64
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -52,6 +58,33 @@ enum CANType {
 typedef enum CANType CANType;
 
 /**
+ * \enum CANDataLengthCode
+ *
+ * \brief Valid values for the DLC field
+ */
+enum CANDataLengthCode {
+    DLC0Bytes,
+    DLC1Byte,
+    DLC2Bytes,
+    DLC3Bytes,
+    DLC4Bytes,
+    DLC5Bytes,
+    DLC6Bytes,
+    DLC7Bytes,
+    DLC8Bytes,
+#if DEVICE_CANFD
+    DLC12Bytes,
+    DLC16Bytes,
+    DLC20Bytes,
+    DLC24Bytes,
+    DLC32Bytes,
+    DLC48Bytes,
+    DLC64Bytes
+#endif
+};
+typedef enum CANDataLengthCode CANDataLengthCode;
+
+/**
  *
  * \struct  CAN_Message
  *
@@ -60,7 +93,7 @@ typedef enum CANType CANType;
 **/
 struct CAN_Message {
     unsigned int   id;                 // 29 bit identifier
-    unsigned char  data[8];            // Data field
+    unsigned char  data[CAN_MAX_SIZE]; // Data field
     unsigned char  len;                // Length of data field in bytes
     CANFormat      format;             // Format ::CANFormat
     CANType        type;               // Type ::CANType

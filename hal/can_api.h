@@ -105,6 +105,10 @@ const PinMap *can_rd_pinmap(void);
  */
 const PinMap *can_td_pinmap(void);
 
+#if DEVICE_CANFD
+void        can_enable_fd(can_t *obj);
+#endif
+
 #ifdef __cplusplus
 };
 #endif
