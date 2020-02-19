@@ -111,4 +111,6 @@ pppdebug
 ppp
 api
 uart
+Vin
+Vref
 _doxy_
