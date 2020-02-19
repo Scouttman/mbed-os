@@ -45,5 +45,6 @@
         "default-adc-vref": {
             "help": "Default reference voltage for ADC (float)",
             "value": 3.3
+        }
     }
 }
