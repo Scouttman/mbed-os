@@ -14839,9 +14839,6 @@
             "MPU"
         ],
         "device_has_remove": [
-            "PORTIN",
-            "PORTINOUT",
-            "PORTOUT",
             "PWMOUT",
             "SPI",
             "SPISLAVE",
