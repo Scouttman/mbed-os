@@ -14839,7 +14839,6 @@
             "MPU"
         ],
         "device_has_remove": [
-            "RTC",
             "ANALOGIN",
             "I2C",
             "I2CSLAVE",
