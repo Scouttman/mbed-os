@@ -70,7 +70,7 @@ typedef enum {
     PWM_5  = (int)TIM5_BASE,
     PWM_6  = (int)TIM6_BASE,
     PWM_7  = (int)TIM7_BASE,
-    PWM_8  = (int)TIM8_BASE, // TODO other timers: TIM20/LPTIM1?
+    PWM_8  = (int)TIM8_BASE,
     PWM_15 = (int)TIM15_BASE,
     PWM_16 = (int)TIM16_BASE,
     PWM_17 = (int)TIM17_BASE,
