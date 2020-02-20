@@ -14854,7 +14854,6 @@
             "SPI",
             "SPISLAVE",
             "SPI_ASYNCH",
-            "STDIO_MESSAGES",
             "WATCHDOG",
             "RESET_REASON"
         ],
