@@ -14850,7 +14850,6 @@
             "PORTINOUT",
             "PORTOUT",
             "PWMOUT",
-            "SERIAL_FC",
             "SLEEP",
             "SPI",
             "SPISLAVE",
